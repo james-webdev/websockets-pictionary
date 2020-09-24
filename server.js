@@ -10,10 +10,9 @@ const app = express();
 const username = "James";
 const password = "websockets-pictionary";
 const hosts =
-  "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
+  "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577?retryWrites=false";
 const database = "websockets-pictionary";
-const options =
-  "?replicaSet=5df3e347a4384bf8968b430ec021a64f?retryWrites=false";
+const options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
 const connectionString =
   "mongodb://" +
   username +
