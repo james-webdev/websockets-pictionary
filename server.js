@@ -9,8 +9,8 @@ const app = express();
 const MongoClient = require("mongodb").MongoClient;
 var username = "James";
 var password = "websockets-pictionary";
-var hosts = "iad2-c13-0.mongo.objectrocket.com:53577";
-var database = "websockets-pictionary?retryWrites=false";
+var hosts = "iad2-c13-0.mongo.objectrocket.com:53577?retryWrites=false";
+var database = "websockets-pictionary";
 var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
 var connectionString =
   "mongodb://" +
