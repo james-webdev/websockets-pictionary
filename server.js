@@ -49,17 +49,17 @@ app.get("/", (request, response, next) => {
   response.render("signup");
 });
 
-MongoClient.connect(connectionString, function (err, db) {
-  if (db) {
-    db.close();
-  }
-  if (err) {
-    console.log("Error: ", err);
-  } else {
-    console.log("Connected!");
-    process.exit();
-  }
-});
+// MongoClient.connect(connectionString, function (err, db) {
+//   if (db) {
+//     db.close();
+//   }
+//   if (err) {
+//     console.log("Error: ", err);
+//   } else {
+//     console.log("Connected!");
+//     process.exit();
+//   }
+// });
 
 app.post("/signup", (request, response, next) => {
   request.body.name;
