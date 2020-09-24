@@ -49,23 +49,23 @@ app.get("/", (request, response, next) => {
   response.render("signup");
 });
 
-// MongoClient.connect(connectionString, function (err, db) {
-//   if (db) {
-//     db.close();
-//   }
-//   if (err) {
-//     console.log("Error: ", err);
-//   } else {
-//     console.log("Connected!");
-//     process.exit();
-//   }
-// });
+MongoClient.connect(connectionString, function (err, db) {
+  if (db) {
+    db.close();
+  }
+  if (err) {
+    console.log("Error: ", err);
+  } else {
+    console.log("Connected!");
+    process.exit();
+  }
+});
 
 app.post("/signup", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  mongodb.MongoClient.connect(
+  MongoClient.connect(
     connectionString,
     {
       useUnifiedTopology: true,
@@ -103,7 +103,7 @@ app.post("/login", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  mongodb.MongoClient.connect(
+  MongoClient.connect(
     connectionString,
     {
       useUnifiedTopology: true,
@@ -179,7 +179,8 @@ app.get("/words", (req, res, next) => {
 //   port = 8000;
 // }
 
-const server = app.listen(8000, () => {heroku
+const server = app.listen(8000, () => {
+  heroku;
   console.log("HTTP Server started on 8000.");
 });
 
@@ -193,7 +194,7 @@ function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
   socket.on("whoAreYou", (id) => {
-    mongodb.MongoClient.connect(
+    MongoClient.connect(
       connectionString,
       {
         useUnifiedTopology: true,
