@@ -174,13 +174,12 @@ app.get("/words", (req, res, next) => {
   res.sendFile(pathname);
 });
 
-// let port = process.env.PORT;
-// if (port == null || port == "") {
-//   port = 8000;
-// }
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
-const server = app.listen(8000, () => {
-  heroku;
+const server = app.listen(port, () => {
   console.log("HTTP Server started on 8000.");
 });
 
