@@ -151,13 +151,18 @@ app.all((error, request, response, next) => {
 app.get("/words", (req, res, next) => {
   const pathname = path.join(__dirname, "/public/words.js");
   res.set({
-    "Access-Control-Allow-Origin": "http://127.0.0.1:8080",
+    "Access-Control-Allow-Origin": "http://127.0.0.1:8000",
   });
   res.sendFile(pathname);
 });
 
-const server = app.listen(8080, () => {
-  console.log("HTTP Server started on 8080.");
+// let port = process.env.PORT;
+// if (port == null || port == "") {
+//   port = 8000;
+// }
+
+const server = app.listen(8000, () => {
+  console.log("HTTP Server started on 8000.");
 });
 
 // WEB SOCKET SERVER
