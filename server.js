@@ -6,7 +6,7 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-const MongoClient = require("mongodb").MongoClient;
+// const MongoClient = require("mongodb").MongoClient;
 const username = "James";
 const password = "websockets-pictionary";
 const hosts =
@@ -66,7 +66,7 @@ app.post("/signup", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  MongoClient.connect(
+  mongodb.MongoClient.connect(
     connectionString,
     {
       useUnifiedTopology: true,
@@ -104,7 +104,7 @@ app.post("/login", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  MongoClient.connect(
+  mongodb.MongoClient.connect(
     connectionString,
     {
       useUnifiedTopology: true,
@@ -194,7 +194,7 @@ function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
   socket.on("whoAreYou", (id) => {
-    MongoClient.connect(
+    mongodb.MongoClient.connect(
       connectionString,
       {
         useUnifiedTopology: true,
