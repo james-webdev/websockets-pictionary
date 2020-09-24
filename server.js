@@ -7,13 +7,13 @@ const path = require("path");
 const express = require("express");
 const app = express();
 var MongoClient = require("mongodb").MongoClient;
-var username = "James";
-var password = "websockets-pictionary";
-var hosts =
+const username = "James";
+const password = "websockets-pictionary";
+const hosts =
   "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
-var database = "websockets-pictionary";
-var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
-var connectionString =
+const database = "websockets-pictionary";
+const options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
+const connectionString =
   "mongodb://" +
   username +
   ":" +
@@ -181,8 +181,7 @@ if (port == null || port == "") {
 
 const server = app.listen(port, () => {
   console.log("HTTP Server started on 8000.");
-});
-
+}const
 // WEB SOCKET SERVER
 const socket = require("socket.io");
 const io = socket(server);
