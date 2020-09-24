@@ -49,98 +49,98 @@ app.get("/", (request, response, next) => {
   response.render("signup");
 });
 
-MongoClient.connect(connectionString, function (err, db) {
-  if (db) {
-    db.close();
-  }
-  if (err) {
-    console.log("Error: ", err);
-  } else {
-    console.log("Connected!");
-    process.exit();
-  }
+// MongoClient.connect(connectionString, function (err, db) {
+//   if (db) {
+//     db.close();
+//   }
+//   if (err) {
+//     console.log("Error: ", err);
+//   } else {
+//     console.log("Connected!");
+//     process.exit();
+//   }
+// });
+
+app.post("/signup", (request, response, next) => {
+  request.body.name;
+  request.body.email;
+  request.body.password;
+  mongodb.MongoClient.connect(
+    connectionString,
+    {
+      useUnifiedTopology: true,
+    },
+    (error, client) => {
+      if (error) {
+        response.redirect("/signup");
+      } else {
+        const db = client.db("websockets-pictionary");
+        db.collection("users", (error, collection) => {
+          collection.insertOne(
+            {
+              name: request.body.name,
+              email: request.body.email,
+              password: request.body.password,
+            },
+            (error, result) => {
+              if (error) {
+                response.redirect("/signup");
+              }
+            }
+          );
+        });
+        response.redirect("/login");
+      }
+    }
+  );
 });
 
-// app.post("/signup", (request, response, next) => {
-//   request.body.name;
-//   request.body.email;
-//   request.body.password;
-//   mongodb.MongoClient.connect(
-//     connectionString,
-//     {
-//       useUnifiedTopology: true,
-//     },
-//     (error, client) => {
-//       if (error) {
-//         response.redirect("/signup");
-//       } else {
-//         const db = client.db("websockets-pictionary");
-//         db.collection("users", (error, collection) => {
-//           collection.insertOne(
-//             {
-//               name: request.body.name,
-//               email: request.body.email,
-//               password: request.body.password,
-//             },
-//             (error, result) => {
-//               if (error) {
-//                 response.redirect("/signup");
-//               }
-//             }
-//           );
-//         });
-//         response.redirect("/login");
-//       }
-//     }
-//   );
-// });
+app.get("/login", (request, response, next) => {
+  response.render("login");
+});
 
-// app.get("/login", (request, response, next) => {
-//   response.render("login");
-// });
-
-// app.post("/login", (request, response, next) => {
-//   request.body.name;
-//   request.body.email;
-//   request.body.password;
-//   mongodb.MongoClient.connect(
-//     connectionString,
-//     {
-//       useUnifiedTopology: true,
-//     },
-//     (error, client) => {
-//       if (error) {
-//         response.redirect("/login");
-//       } else {
-//         const db = client.db("websockets-pictionary");
-//         db.collection("users", (error, collection) => {
-//           collection.findOne(
-//             {
-//               email: request.body.email,
-//             },
-//             (error, result) => {
-//               console.log(result);
-//               console.log(request.body.password);
-//               // console.log(error);
-//               if (error) {
-//                 response.redirect("/login");
-//               } else {
-//                 if (request.body.password === result.password) {
-//                   request.session._id = result._id;
-//                   request.session.email = result.email;
-//                   request.session.name = result.name;
-//                   response.redirect("/index");
-//                 } else {
-//                   response.redirect("/login");
-//                 }
-//               }
-//             }
-//           );
-//         });
-//       }
-//     }
-//   );
-// });
+app.post("/login", (request, response, next) => {
+  request.body.name;
+  request.body.email;
+  request.body.password;
+  mongodb.MongoClient.connect(
+    connectionString,
+    {
+      useUnifiedTopology: true,
+    },
+    (error, client) => {
+      if (error) {
+        response.redirect("/login");
+      } else {
+        const db = client.db("websockets-pictionary");
+        db.collection("users", (error, collection) => {
+          collection.findOne(
+            {
+              email: request.body.email,
+            },
+            (error, result) => {
+              console.log(result);
+              console.log(request.body.password);
+              // console.log(error);
+              if (error) {
+                response.redirect("/login");
+              } else {
+                if (request.body.password === result.password) {
+                  request.session._id = result._id;
+                  request.session.email = result.email;
+                  request.session.name = result.name;
+                  response.redirect("/index");
+                } else {
+                  response.redirect("/login");
+                }
+              }
+            }
+          );
+        });
+      }
+    }
+  );
+});
 
 app.get("/index", (request, response, next) => {
   if (request.session.email) {
