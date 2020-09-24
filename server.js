@@ -6,6 +6,23 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
+var MongoClient = require("mongodb").MongoClient;
+var username = "James";
+var password = "websockets-pictionary";
+var hosts =
+  "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
+var database = "websockets-pictionary";
+var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
+var connectionString =
+  "mongodb://" +
+  username +
+  ":" +
+  password +
+  "@" +
+  hosts +
+  "/" +
+  database +
+  options;
 
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -15,7 +32,7 @@ app.use(
     saveUninitialized: true,
     secret: "shhh",
     store: new MongoStore({
-      url: "mongodb://localhost:27017/websockets-pictionary",
+      url: connectionString,
     }),
   })
 );
@@ -32,12 +49,24 @@ app.get("/", (request, response, next) => {
   response.render("signup");
 });
 
+// MongoClient.connect(connectionString, function (err, db) {
+//   if (db) {
+//     db.close();
+//   }
+//   if (err) {
+//     console.log("Error: ", err);
+//   } else {
+//     console.log("Connected!");
+//     process.exit();
+//   }
+// });
+
 app.post("/signup", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb://localhost:27017/websockets-pictionary",
+    connectionString,
     {
       useUnifiedTopology: true,
     },
@@ -75,7 +104,7 @@ app.post("/login", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb://localhost:27017/websockets-pictionary",
+    connectionString,
     {
       useUnifiedTopology: true,
     },
@@ -165,7 +194,7 @@ function newConnection(socket) {
 
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
-      "mongodb://localhost:27017/websockets-pictionary",
+      connectionString,
       {
         useUnifiedTopology: true,
       },
