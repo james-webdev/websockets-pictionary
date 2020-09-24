@@ -38,7 +38,7 @@ html(lang="en")
         
     script.
       //GUESS CHAT
-      socket = io.connect("http://127.0.0.1:8181");
+      socket = io.connect("http://127.0.0.1:8080");
         const send = function (){
         const text = document.querySelector(".message").value;
       // console.log(text);
@@ -61,7 +61,7 @@ html(lang="en")
       console.log("you clicked me!!");
       // console.log($);
       $.ajax({
-      url: "http://localhost:8181/words",
+      url: "http://localhost:8080/words",
       method: "GET",
       success: function (results) {
       // console.log(results);
