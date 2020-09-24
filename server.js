@@ -181,7 +181,7 @@ if (port == null || port == "") {
 
 const server = app.listen(port, () => {
   console.log("HTTP Server started on 8000.");
-}
+});
 
 // WEB SOCKET SERVER
 const socket = require("socket.io");
