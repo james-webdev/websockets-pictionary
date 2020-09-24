@@ -1,0 +1,120 @@
+body {
+  background: #202028;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 16px;
+}
+
+h5 {
+  margin-top: 50px;
+}
+canvas {
+  background-color: black;
+  border: white 2px solid;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  margin-right: 100px;
+}
+
+.container {
+  /* border: solid white 1px; */
+  width: 280px;
+  margin-top: 120px;
+}
+
+.textareas {
+  display: block;
+}
+
+.txta2 {
+  position: relative;
+  bottom: 18px;
+}
+
+.btn {
+  color: #00ffff;
+  border: solid 1px #00ffff;
+  margin-top: 10px;
+}
+.btn:hover {
+  background-color: #00ffff !important;
+}
+
+p div {
+  font-size: 42px;
+  margin-top: 20px;
+  margin-left: 35px;
+}
+
+.players {
+  /* border: solid white 2px; */
+  margin-top: 120px;
+  width: 200px;
+  margin-right: 31px;
+  font-size: 20px;
+}
+
+/* signup and login */
+
+.signupCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 467px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.signupCont .btn {
+  color: #00ffff;
+  background-color: #202028;
+  border: 1px solid #00ffff;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-left: 57px;
+}
+
+.signupCont .btn:hover {
+  color: white;
+}
+
+.inputSignUp {
+  border-radius: 3px;
+  height: 25px;
+}
+
+.newword {
+  margin-top: 30px;
+}
+
+.already {
+  display: flex;
+  justify-content: center;
+}
+.already a {
+  color: #00ffff;
+  font-size: 12px;
+}
+
+.already a:hover {
+  color: "white" !important;
+}
+
+form {
+  /* background-color: black; */
+  border: solid 1px white;
+  border-radius: 3px;
+  padding: 34px;
+  box-shadow: 2px 2px 8px #888888;
+}
+
+ul {
+  list-style-type: none;
+}

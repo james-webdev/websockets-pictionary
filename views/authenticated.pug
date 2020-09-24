@@ -1,0 +1,17 @@
+head
+  title Authenticated
+  script(src='/socket.io/socket.io.js')
+  script.
+    window.addEventListener('DOMContentLoaded', function(){
+      var socket = io('http://localhost:8080');
+
+      socket.on('connect', function(){
+        var idUtilisateur = '#{_id}';
+        socket.emit('whoAreYou', idUtilisateur);
+
+        socket.on('questionReply',function(reponse) {
+        console.log("You Are :", reponse);
+        });
+      });
+    });
+h1 What's up #{name}!!

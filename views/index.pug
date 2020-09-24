@@ -1,0 +1,108 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Pictionary
+    script(src="/public/librairies/p5.min.js")
+    script(src="/public/sketch.js")
+    script(src="/socket.io/socket.io.js")
+    script(src="/public/librairies/jquery-3.4.1.min.js")
+    //- script(src="/public/pugScript.js")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+    link(rel="stylesheet" href="/public/style.css")
+  body
+    .container
+      //- h1 Pictionary!!
+      // <textarea name="guess" id="" cols="30" rows="10">Guess</textarea>
+      div
+        .textareas
+          .txta1
+            label(for="") Chat! Say your name and send your guesses:
+            textarea.message.submit_on_enter(onfocus="this.value=''" cols="30" rows="3")
+            button.btn.btn-outline-primary(onclick="send()")
+              | Send
+            // <button onclick="clearChat()">Clear chat</button>
+          br
+          div(txta2="")
+            label(for="") Sent:
+            textarea.receive(onfocus="this.value=''" cols="30" rows="3")
+      button.newword.btn.btn-outline-primary New Word
+      p.para(style="color: white;")
+    .players 
+      h1 Hey #{name}!
+      h4 You have .. points
+      h5 Who else is playing?
+      ul
+        li
+        
+    script.
+      //GUESS CHAT
+      socket = io.connect("http://127.0.0.1:8181");
+        const send = function (){
+        const text = document.querySelector(".message").value;
+      // console.log(text);
+        socket.emit("chat message", text);
+      // setTimeout(function () {
+      //   text = "";
+      // }, 5000);
+      };
+      const receive = function (msg) {
+      const txtarea = document.querySelector(".receive");
+      // console.log(txtarea);
+      txtarea.value = msg;
+      };
+      socket.on("chat message", receive);
+      //DISPLAY A WORD
+      const button = document.querySelector(".newword");
+      //- console.log(button);
+      const p = document.querySelector(".para");
+      button.addEventListener("click", (e) => {
+      console.log("you clicked me!!");
+      // console.log($);
+      $.ajax({
+      url: "http://localhost:8181/words",
+      method: "GET",
+      success: function (results) {
+      // console.log(results);
+      const resultObj = JSON.parse(results);
+      console.log(resultObj);
+      // const resultsArray = [...resultObj];
+      // console.log(resultsArray);
+      const randomWord =
+      resultObj[
+      Object.keys(resultObj)[
+      Math.floor(Math.random() * Object.keys(resultObj).length)
+      ]
+      ];
+      console.log(randomWord);
+      const wordDiv = document.createElement("div");
+      wordDiv.innerHTML = randomWord;
+      p.appendChild(wordDiv);
+      setTimeout(function () {
+      p.removeChild(wordDiv);
+      }, 2000);
+      },
+      });
+      });
+      //SHOW ID
+      socket.on('connect', function(){
+        var idUtilisateur = '#{_id}';
+        socket.emit('whoAreYou', idUtilisateur);
+
+        socket.on('questionReply',function(response) {
+        const responseArray = [];
+        //- console.log(responseArray);
+          console.log("You Are :", response);
+          //- responseArray[...response.name];
+          //- console.log(responseArray);
+          //- responseArray.forEach(name, ()=> {
+          const li = document.querySelector("li");
+          li.innerHTML = `<button class="btn btn-outline-primary">${response.name}</button>`;
+          //- console.log(li);
+          //- });
+        //- console.log(Object.values(response));
+        //- console.log(name)
+       });
+       });
+       //CLEAR

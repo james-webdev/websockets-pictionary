@@ -1,0 +1,23 @@
+doctype html
+head
+  link(rel="stylesheet" href="/public/style.css")
+  title Sign Up
+.signupCont
+  form(action='/signup', method='POST')
+    p
+      |First Name:
+      br
+      input(class="inputSignUp", type='text', name='name')
+    p
+      | Email: 
+      br
+      input(class="inputSignUp", type='text', name='email')
+    p
+      | Password:
+      br
+      input(class="inputSignUp", type='password', name='password')
+    p
+      input(class="btn", type='submit', value='Sign Up')
+    
+    .already
+      a(href='/login') Already got an account?
