@@ -6,13 +6,14 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-var MongoClient = require("mongodb").MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 const username = "James";
 const password = "websockets-pictionary";
 const hosts =
   "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
 const database = "websockets-pictionary";
-const options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
+const options =
+  "?replicaSet=5df3e347a4384bf8968b430ec021a64f?retryWrites=false";
 const connectionString =
   "mongodb://" +
   username +
