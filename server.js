@@ -20,17 +20,6 @@ app.use(
   })
 );
 
-// app.get("/", (request, response, next) => {
-//   response.sendFile(
-//     path.normalize(`${__dirname}/public/p5pictionary.html`),
-//     (error) => {
-//       if (error) {
-//         next(error);
-//       }
-//     }
-//   );
-// });
-
 app.set("view engine", "pug");
 
 app.use(

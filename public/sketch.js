@@ -4,7 +4,7 @@ let buttonClear;
 function setup() {
   createCanvas(600, 600);
   background("black");
-  socket = io.connect("http://127.0.0.1:8181");
+  socket = io.connect("http://127.0.0.1:8000");
 
   socket.on("mouse", (data) => {
     line(data.x, data.y, data.a, data.b);
