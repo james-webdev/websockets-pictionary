@@ -72,7 +72,7 @@ app.post("/signup", (request, response, next) => {
     if (error) {
       response.redirect("/signup");
     } else {
-      const db = client.db("websockets-pictionary");
+      const db = client.db("websockets");
       db.collection("users", (error, collection) => {
         collection.insertOne(
           {
@@ -104,7 +104,7 @@ app.post("/login", (request, response, next) => {
     if (error) {
       response.redirect("/login");
     } else {
-      const db = client.db("websockets-pictionary");
+      const db = client.db("websockets");
       db.collection("users", (error, collection) => {
         collection.findOne(
           {
@@ -188,7 +188,7 @@ function newConnection(socket) {
       if (error) {
         socket.emit("questionReply", {});
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.findOne(
             {
