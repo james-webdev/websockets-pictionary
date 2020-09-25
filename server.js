@@ -227,5 +227,3 @@ function newConnection(socket) {
     // io.sockets.emit("chat message", msg);
   });
 }
-var mongoose = require(‘mongoose’);
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/your-app-name');
