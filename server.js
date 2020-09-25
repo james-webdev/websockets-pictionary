@@ -70,6 +70,7 @@ app.post("/signup", (request, response, next) => {
   request.body.password;
   mongodb.MongoClient.connect(connectionString, (error, client) => {
     if (error) {
+      console.log(error);
       response.redirect("/signup");
     } else {
       const db = client.db("websockets");
@@ -226,3 +227,5 @@ function newConnection(socket) {
     // io.sockets.emit("chat message", msg);
   });
 }
+var mongoose = require(‘mongoose’);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/your-app-name');
