@@ -26,16 +26,16 @@ var connectionString =
 
 app.use("/public", express.static(__dirname + "/public"));
 
-app.use(
-  session({
-    resave: true,
-    saveUninitialized: true,
-    secret: "shhh",
-    store: new MongoStore({
-      url: connectionString,
-    }),
-  })
-);
+// app.use(
+//   session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: "shhh",
+//     store: new MongoStore({
+//       url: connectionString,
+//     }),
+//   })
+// );
 
 app.set("view engine", "pug");
 
