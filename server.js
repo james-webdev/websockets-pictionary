@@ -6,6 +6,7 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
+const db = process.env.MONGODB_URL;
 // const MongoClient = require("mongodb").MongoClient;
 // var username = "james";
 // var password = "websockets";
@@ -32,8 +33,7 @@ app.use(
     saveUninitialized: true,
     secret: "shhh",
     store: new MongoStore({
-      url:
-        "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
+      url: db,
     }),
   })
 );
@@ -55,7 +55,7 @@ app.post("/signup", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
+    db,
     {
       useUnifiedTopology: true,
     },
@@ -95,7 +95,7 @@ app.post("/login", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
+    db,
     {
       useUnifiedTopology: true,
     },
@@ -167,12 +167,12 @@ app.get("/words", (req, res, next) => {
   res.sendFile(pathname);
 });
 
-// let port = process.env.PORT;
-// if (port == null || port == "") {
-//   port = 8000;
-// }
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
-const server = app.listen(8000, () => {
+const server = app.listen(port, () => {
   console.log("HTTP Server started on 8000.");
 });
 
@@ -187,7 +187,7 @@ function newConnection(socket) {
 
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
-      "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
+      db,
       {
         useUnifiedTopology: true,
       },
@@ -227,7 +227,7 @@ function newConnection(socket) {
   socket.on("tenpoints", (responseID) => {
     // console.log(id);
     mongodb.MongoClient.connect(
-      "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
+      db,
       {
         useUnifiedTopology: true,
       },
