@@ -65,3 +65,31 @@ socket.on("connect", function () {
   });
 });
 //CLEAR
+
+
+socket.on('connect', function(){
+  var idUtilisateur = '#{_id}';
+  socket.emit('whoAreYou', idUtilisateur);
+
+  socket.on('questionReply',function(response) {
+     const responseArray = [];
+     console.log(response);
+
+     function sendResponse(response._id){
+       console.log("points response", response._id);
+        socket.emit('tenpoints', response._id);
+     };
+        function sendPoints(e) {  
+          console.log("e response", e);
+          console.log("you clicked me to add points!");
+          sendResponse();
+        }; 
+       console.log("You Are :", response);         
+       const li = document.querySelector("li");
+       li.innerHTML = `<button class="clickIt btn btn-outline-primary">${response.name}</button>`;
+       const clickButt = document.querySelector(".clickIt")
+       console.log(clickButt);
+       clickButt.addEventListener("click", sendPoints);
+  
+   });
+});

@@ -118,3 +118,14 @@ form {
 ul {
   list-style-type: none;
 }
+
+.logout {
+  color: #00ffff;
+  font-size: 15px;
+  position: relative;
+  bottom: 80px;
+}
+
+.logout:hover {
+  color: white;
+}

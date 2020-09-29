@@ -6,36 +6,36 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-const MongoClient = require("mongodb").MongoClient;
-var username = "james";
-var password = "websockets";
-var hosts =
-  "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
-var database = "websockets";
-var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
-var connectionString =
-  "mongodb://" +
-  username +
-  ":" +
-  password +
-  "@" +
-  hosts +
-  "/" +
-  database +
-  options;
+// const MongoClient = require("mongodb").MongoClient;
+// var username = "james";
+// var password = "websockets";
+// var hosts =
+//   "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
+// var database = "websockets";
+// var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
+// var connectionString =
+//   "mongodb://" +
+//   username +
+//   ":" +
+//   password +
+//   "@" +
+//   hosts +
+//   "/" +
+//   database +
+//   options;
 
 app.use("/public", express.static(__dirname + "/public"));
 
-// app.use(
-//   session({
-//     resave: true,
-//     saveUninitialized: true,
-//     secret: "shhh",
-//     store: new MongoStore({
-//       url: connectionString,
-//     }),
-//   })
-// );
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: "shhh",
+    store: new MongoStore({
+      url: "mongodb://localhost:27017/websockets-pictionary",
+    }),
+  })
+);
 
 app.set("view engine", "pug");
 
@@ -49,48 +49,40 @@ app.get("/", (request, response, next) => {
   response.render("signup");
 });
 
-// MongoClient.connect(connectionString, function (err, db) {
-//   if (db) {
-//     db.close();
-//   }
-//   if (err) {
-//     console.log("Error: ", err);
-//   } else {
-//     console.log("Connected!");
-//     process.exit();
-//   }
-// });
-// {
-//   useUnifiedTopology: true,
-// }
-
 app.post("/signup", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  mongodb.MongoClient.connect(connectionString, (error, client) => {
-    if (error) {
-      console.log(error);
-      response.redirect("/signup");
-    } else {
-      const db = client.db("websockets");
-      db.collection("users", (error, collection) => {
-        collection.insertOne(
-          {
-            name: request.body.name,
-            email: request.body.email,
-            password: request.body.password,
-          },
-          (error, result) => {
-            if (error) {
-              response.redirect("/signup");
+  mongodb.MongoClient.connect(
+    "mongodb://localhost:27017/websockets-pictionary",
+    {
+      useUnifiedTopology: true,
+    },
+    (error, client) => {
+      if (error) {
+        console.log(error);
+        response.redirect("/signup");
+      } else {
+        const db = client.db("websockets-pictionary");
+        db.collection("users", (error, collection) => {
+          collection.insertOne(
+            {
+              name: request.body.name,
+              email: request.body.email,
+              password: request.body.password,
+              points: 0,
+            },
+            (error, result) => {
+              if (error) {
+                response.redirect("/signup");
+              }
             }
-          }
-        );
-      });
-      response.redirect("/login");
+          );
+        });
+        response.redirect("/login");
+      }
     }
-  });
+  );
 });
 
 app.get("/login", (request, response, next) => {
@@ -101,37 +93,44 @@ app.post("/login", (request, response, next) => {
   request.body.name;
   request.body.email;
   request.body.password;
-  mongodb.MongoClient.connect(connectionString, (error, client) => {
-    if (error) {
-      response.redirect("/login");
-    } else {
-      const db = client.db("websockets");
-      db.collection("users", (error, collection) => {
-        collection.findOne(
-          {
-            email: request.body.email,
-          },
-          (error, result) => {
-            console.log(result);
-            console.log(request.body.password);
-            // console.log(error);
-            if (error) {
-              response.redirect("/login");
-            } else {
-              if (request.body.password === result.password) {
-                request.session._id = result._id;
-                request.session.email = result.email;
-                request.session.name = result.name;
-                response.redirect("/index");
-              } else {
+  mongodb.MongoClient.connect(
+    "mongodb://localhost:27017/websockets-pictionary",
+    {
+      useUnifiedTopology: true,
+    },
+    (error, client) => {
+      if (error) {
+        response.redirect("/login");
+      } else {
+        const db = client.db("websockets-pictionary");
+        db.collection("users", (error, collection) => {
+          collection.findOne(
+            {
+              email: request.body.email,
+            },
+            (error, result) => {
+              console.log(result);
+              console.log(request.body.password);
+              // console.log(error);
+              if (error) {
                 response.redirect("/login");
+              } else {
+                if (request.body.password === result.password) {
+                  request.session._id = result._id;
+                  request.session.email = result.email;
+                  request.session.name = result.name;
+                  request.session.points = result.points;
+                  response.redirect("/index");
+                } else {
+                  response.redirect("/login");
+                }
               }
             }
-          }
-        );
-      });
+          );
+        });
+      }
     }
-  });
+  );
 });
 
 app.get("/index", (request, response, next) => {
@@ -140,6 +139,7 @@ app.get("/index", (request, response, next) => {
       _id: request.session._id,
       email: request.session.email,
       name: request.session.name,
+      points: request.session.points,
     });
   } else {
     response.redirect("/login");
@@ -161,18 +161,18 @@ app.all((error, request, response, next) => {
 app.get("/words", (req, res, next) => {
   const pathname = path.join(__dirname, "/public/words.js");
   res.set({
-    "Access-Control-Allow-Origin": "http://127.0.0.1:8000",
+    "Access-Control-Allow-Origin": "http://127.0.0.1:8080",
   });
   res.sendFile(pathname);
 });
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 8000;
-}
+// let port = process.env.PORT;
+// if (port == null || port == "") {
+//   port = 8000;
+// }
 
-const server = app.listen(port, () => {
-  console.log("HTTP Server started on 8000.");
+const server = app.listen(8080, () => {
+  console.log("HTTP Server started on 8080.");
 });
 
 // WEB SOCKET SERVER
@@ -185,34 +185,100 @@ function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
   socket.on("whoAreYou", (id) => {
-    mongodb.MongoClient.connect(connectionString, (error, client) => {
-      if (error) {
-        socket.emit("questionReply", {});
-      } else {
-        const db = client.db("websockets");
-        db.collection("users", (error, collection) => {
-          collection.findOne(
-            {
-              _id: mongodb.ObjectId(id),
-            },
-            {
-              projection: {
-                _id: true,
-                name: true,
+    mongodb.MongoClient.connect(
+      "mongodb://localhost:27017/websockets-pictionary",
+      {
+        useUnifiedTopology: true,
+      },
+      (error, client) => {
+        if (error) {
+          socket.emit("questionReply", {});
+        } else {
+          const db = client.db("websockets-pictionary");
+          db.collection("users", (error, collection) => {
+            collection.findOne(
+              {
+                _id: mongodb.ObjectId(id),
               },
-            },
-            (error, user) => {
-              if (error) {
-                socket.emit("questionReply", {});
-              } else {
-                console.log("USER :", user);
-                socket.broadcast.emit("questionReply", user);
+              {
+                projection: {
+                  _id: true,
+                  name: true,
+                  points: true,
+                },
+              },
+              (error, user) => {
+                if (error) {
+                  socket.emit("questionReply", {});
+                } else {
+                  console.log("USER :", user);
+                  socket.broadcast.emit("questionReply", user);
+                }
               }
-            }
-          );
-        });
+            );
+          });
+        }
       }
-    });
+    );
+  });
+
+  // ADD TEN POINTS
+  socket.on("tenpoints", (responseID) => {
+    // console.log(id);
+    mongodb.MongoClient.connect(
+      "mongodb://localhost:27017/websockets-pictionary",
+      {
+        useUnifiedTopology: true,
+      },
+      (error, client) => {
+        if (error) {
+          socket.emit("tenpoints", {});
+        } else {
+          const db = client.db("websockets-pictionary");
+          db.collection("users", (error, collection) => {
+            collection.findOne(
+              {
+                _id: mongodb.ObjectId(responseID),
+              },
+              {
+                projection: {
+                  _id: true,
+                  name: true,
+                  points: true,
+                },
+              },
+              (error, user) => {
+                if (error) {
+                  socket.emit("tenpoints", {});
+                } else {
+                  // console.log("added 10 points");
+                  // console.log("this is your player", user);
+                  const db = client.db("websockets-pictionary");
+                  db.collection("users", (error, collection) => {
+                    collection.updateOne(
+                      {
+                        _id: mongodb.ObjectId(responseID),
+                      },
+                      {
+                        $inc: { points: 10 },
+                      },
+                      (error, result) => {
+                        if (error) {
+                          response.redirect("/index");
+                        } else {
+                          // console.log("user arrives here", user);
+                          // socket.emit("pointsUpdate", user);
+                        }
+                      }
+                    );
+                  });
+                }
+              }
+            );
+          });
+        }
+      }
+    );
   });
 
   socket.on("mouse", function (data) {
