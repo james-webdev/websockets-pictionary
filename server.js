@@ -32,7 +32,8 @@ app.use(
     saveUninitialized: true,
     secret: "shhh",
     store: new MongoStore({
-      url: "mongodb://localhost:27017/websockets-pictionary",
+      url:
+        "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
     }),
   })
 );
@@ -54,7 +55,7 @@ app.post("/signup", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb://localhost:27017/websockets-pictionary",
+    "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
     {
       useUnifiedTopology: true,
     },
@@ -63,7 +64,7 @@ app.post("/signup", (request, response, next) => {
         console.log(error);
         response.redirect("/signup");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.insertOne(
             {
@@ -94,7 +95,7 @@ app.post("/login", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    "mongodb://localhost:27017/websockets-pictionary",
+    "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
     {
       useUnifiedTopology: true,
     },
@@ -102,7 +103,7 @@ app.post("/login", (request, response, next) => {
       if (error) {
         response.redirect("/login");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.findOne(
             {
@@ -161,7 +162,7 @@ app.all((error, request, response, next) => {
 app.get("/words", (req, res, next) => {
   const pathname = path.join(__dirname, "/public/words.js");
   res.set({
-    "Access-Control-Allow-Origin": "http://127.0.0.1:8080",
+    "Access-Control-Allow-Origin": "http://127.0.0.1:8000",
   });
   res.sendFile(pathname);
 });
@@ -171,8 +172,8 @@ app.get("/words", (req, res, next) => {
 //   port = 8000;
 // }
 
-const server = app.listen(8080, () => {
-  console.log("HTTP Server started on 8080.");
+const server = app.listen(8000, () => {
+  console.log("HTTP Server started on 8000.");
 });
 
 // WEB SOCKET SERVER
@@ -186,7 +187,7 @@ function newConnection(socket) {
 
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
-      "mongodb://localhost:27017/websockets-pictionary",
+      "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
       {
         useUnifiedTopology: true,
       },
@@ -194,7 +195,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("questionReply", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -212,7 +213,7 @@ function newConnection(socket) {
                   socket.emit("questionReply", {});
                 } else {
                   console.log("USER :", user);
-                  socket.broadcast.emit("questionReply", user);
+                  io.emit("questionReply", user);
                 }
               }
             );
@@ -226,7 +227,7 @@ function newConnection(socket) {
   socket.on("tenpoints", (responseID) => {
     // console.log(id);
     mongodb.MongoClient.connect(
-      "mongodb://localhost:27017/websockets-pictionary",
+      "mongodb+srv://James2:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority",
       {
         useUnifiedTopology: true,
       },
@@ -234,7 +235,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("tenpoints", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -253,7 +254,7 @@ function newConnection(socket) {
                 } else {
                   // console.log("added 10 points");
                   // console.log("this is your player", user);
-                  const db = client.db("websockets-pictionary");
+                  const db = client.db("websockets");
                   db.collection("users", (error, collection) => {
                     collection.updateOne(
                       {
@@ -267,7 +268,7 @@ function newConnection(socket) {
                           response.redirect("/index");
                         } else {
                           // console.log("user arrives here", user);
-                          // socket.emit("pointsUpdate", user);
+                          socket.broadcast.emit("pointsUpdate", user);
                         }
                       }
                     );
