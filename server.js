@@ -145,7 +145,8 @@ app.all((error, request, response, next) => {
 app.get("/words", (req, res, next) => {
   const pathname = path.join(__dirname, "/public/words.js");
   res.set({
-    "Access-Control-Allow-Origin": "http://127.0.0.1:8000",
+    "Access-Control-Allow-Origin":
+      "https://damp-woodland-05737.herokuapp.com:8000",
   });
   res.sendFile(pathname);
 });
@@ -168,9 +169,9 @@ io.sockets.on("connection", newConnection);
 function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
-  // socket.on("I am here", (userName) => {
-  //   console.log("I am here", userName);
-  // });
+  socket.on("I am here", (userName) => {
+    console.log("I am here", userName);
+  });
 
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
