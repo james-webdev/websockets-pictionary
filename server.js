@@ -6,7 +6,9 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-const db = process.env.MONGODB_URL;
+// const db = process.env.MONGODB_URL;
+const urlApp = "http://localhost:8080";
+const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
 
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -16,7 +18,7 @@ app.use(
     saveUninitialized: true,
     secret: "shhh",
     store: new MongoStore({
-      url: db,
+      url: dbUrl,
     }),
   })
 );
@@ -38,7 +40,7 @@ app.post("/signup", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    db,
+    dbUrl,
     {
       useUnifiedTopology: true,
     },
@@ -47,7 +49,7 @@ app.post("/signup", (request, response, next) => {
         console.log(error);
         response.redirect("/signup");
       } else {
-        const db = client.db("websockets");
+        const db = client.db("websockets-pictionary");
         db.collection("users", (error, collection) => {
           collection.insertOne(
             {
@@ -78,7 +80,7 @@ app.post("/login", (request, response, next) => {
   request.body.email;
   request.body.password;
   mongodb.MongoClient.connect(
-    db,
+    dbUrl,
     {
       useUnifiedTopology: true,
     },
@@ -86,7 +88,7 @@ app.post("/login", (request, response, next) => {
       if (error) {
         response.redirect("/login");
       } else {
-        const db = client.db("websockets");
+        const db = client.db("websockets-pictionary");
         db.collection("users", (error, collection) => {
           collection.findOne(
             {
@@ -145,19 +147,18 @@ app.all((error, request, response, next) => {
 app.get("/words", (req, res, next) => {
   const pathname = path.join(__dirname, "/public/words.js");
   res.set({
-    "Access-Control-Allow-Origin":
-      "https://damp-woodland-05737.herokuapp.com:8000",
+    "Access-Control-Allow-Origin": urlApp,
   });
   res.sendFile(pathname);
 });
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8000;
+  port = 8080;
 }
 
 const server = app.listen(port, () => {
-  console.log("HTTP Server started on 8000.");
+  console.log("HTTP Server started on 8080.");
 });
 
 // WEB SOCKET SERVER
@@ -175,7 +176,7 @@ function newConnection(socket) {
 
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
-      db,
+      dbUrl,
       {
         useUnifiedTopology: true,
       },
@@ -183,7 +184,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("questionReply", {});
         } else {
-          const db = client.db("websockets");
+          const db = client.db("websockets-pictionary");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -215,7 +216,7 @@ function newConnection(socket) {
   socket.on("tenpoints", (responseID) => {
     // console.log(id);
     mongodb.MongoClient.connect(
-      db,
+      dbUrl,
       {
         useUnifiedTopology: true,
       },
@@ -223,7 +224,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("tenpoints", {});
         } else {
-          const db = client.db("websockets");
+          const db = client.db("websockets-pictionary");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -242,7 +243,7 @@ function newConnection(socket) {
                 } else {
                   // console.log("added 10 points");
                   // console.log("this is your player", user);
-                  const db = client.db("websockets");
+                  const db = client.db("websockets-pictionary");
                   db.collection("users", (error, collection) => {
                     collection.updateOne(
                       {

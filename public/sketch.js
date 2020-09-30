@@ -1,10 +1,11 @@
 let socket;
 let buttonClear;
+// const urlApp = "http://localhost:8080";
 
 function setup() {
   createCanvas(600, 600);
   background("black");
-  socket = io.connect("https://damp-woodland-05737.herokuapp.com:8000");
+  socket = io.connect("http://localhost:8080");
 
   socket.on("mouse", (data) => {
     line(data.x, data.y, data.a, data.b);
