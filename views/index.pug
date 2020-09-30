@@ -93,12 +93,10 @@ html(lang="en")
       socket.on('connect', function(){
           var idUtilisateur = '#{_id}';
           socket.emit('whoAreYou', idUtilisateur);
-
-          //- socket.on("pointsUpdate", function(user){
-          //-   console.log("hare are the points you want", user.points);
-          //-   //- const H2 = document.querySelector("h2");
-          //-   //- H2.innerHTML = `${user.points}`;
-          //- });
+          
+          //- const userName = '#{name}'
+          //- socket.emit("I am here", userName);
+         
           let responseArray = [];
           socket.on('questionReply',function(response) {
              

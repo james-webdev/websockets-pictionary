@@ -7,23 +7,6 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const db = process.env.MONGODB_URL;
-// const MongoClient = require("mongodb").MongoClient;
-// var username = "james";
-// var password = "websockets";
-// var hosts =
-//   "iad2-c13-0.mongo.objectrocket.com:53577,iad2-c13-2.mongo.objectrocket.com:53577,iad2-c13-1.mongo.objectrocket.com:53577";
-// var database = "websockets";
-// var options = "?replicaSet=5df3e347a4384bf8968b430ec021a64f";
-// var connectionString =
-//   "mongodb://" +
-//   username +
-//   ":" +
-//   password +
-//   "@" +
-//   hosts +
-//   "/" +
-//   database +
-//   options;
 
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -110,8 +93,8 @@ app.post("/login", (request, response, next) => {
               email: request.body.email,
             },
             (error, result) => {
-              console.log(result);
-              console.log(request.body.password);
+              // console.log(result);
+              // console.log(request.body.password);
               // console.log(error);
               if (error) {
                 response.redirect("/login");
@@ -185,6 +168,10 @@ io.sockets.on("connection", newConnection);
 function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
+  // socket.on("I am here", (userName) => {
+  //   console.log("I am here", userName);
+  // });
+
   socket.on("whoAreYou", (id) => {
     mongodb.MongoClient.connect(
       db,
@@ -212,7 +199,7 @@ function newConnection(socket) {
                 if (error) {
                   socket.emit("questionReply", {});
                 } else {
-                  console.log("USER :", user);
+                  // console.log("USER :", user);
                   io.emit("questionReply", user);
                 }
               }
@@ -289,7 +276,7 @@ function newConnection(socket) {
   });
 
   socket.on("chat message", function (msg) {
-    console.log("message is" + msg);
+    // console.log("message is" + msg);
     socket.broadcast.emit("chat message", msg);
     // io.sockets.emit("chat message", msg);
   });
