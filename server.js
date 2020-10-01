@@ -6,10 +6,12 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-// const db = process.env.MONGODB_URL;
-const urlApp = "http://localhost:8080";
-const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
-
+const db = process.env.MONGODB_URL;
+// const urlApp = "http://localhost:8080";
+// const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
+const dbUrl =
+  "mongodb+srv://James:Japan2262@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
+const urlApp = "";
 app.use("/public", express.static(__dirname + "/public"));
 
 app.use(
@@ -154,11 +156,11 @@ app.get("/words", (req, res, next) => {
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8080;
+  port = 8000;
 }
 
 const server = app.listen(port, () => {
-  console.log("HTTP Server started on 8080.");
+  console.log("HTTP Server started on 8000.");
 });
 
 // WEB SOCKET SERVER
