@@ -32,7 +32,7 @@ html(lang="en")
       p.para(style="color: white;")
     .players 
       h1 Hey #{name}!
-      h1 You have #{points} points
+      h1 You have 
       h2 
       h5 Who is playing? Click to add 10 points if they guess right first!
       ul
@@ -64,7 +64,7 @@ html(lang="en")
       console.log("you clicked me!!");
       // console.log($);
       $.ajax({
-      url: "https://damp-woodland-05737.herokuapp.com/",
+      url: "https://damp-woodland-05737.herokuapp.com/words",
       method: "GET",
       success: function (results) {
       // console.log(results);
