@@ -5,7 +5,7 @@ let buttonClear;
 function setup() {
   createCanvas(600, 600);
   background("black");
-  socket = io.connect("http://localhost:8080");
+  socket = io.connect("https://damp-woodland-05737.herokuapp.com/");
 
   socket.on("mouse", (data) => {
     line(data.x, data.y, data.a, data.b);
