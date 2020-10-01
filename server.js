@@ -11,7 +11,7 @@ const db = process.env.MONGODB_URL;
 // const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
 const dbUrl =
   "mongodb+srv://James:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
-const urlApp = "https://damp-woodland-05737.herokuapp.com/";
+const urlApp = "https://pictionary-websockets.herokuapp.com/";
 app.use("/public", express.static(__dirname + "/public"));
 
 app.use(
