@@ -10,7 +10,7 @@ const db = process.env.MONGODB_URL;
 // const urlApp = "http://localhost:8080";
 // const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
 const dbUrl =
-  "mongodb+srv://James:Japan2262@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
+  "mongodb+srv://James:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
 const urlApp = "https://damp-woodland-05737.herokuapp.com/";
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -51,7 +51,7 @@ app.post("/signup", (request, response, next) => {
         console.log(error);
         response.redirect("/signup");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.insertOne(
             {
@@ -90,7 +90,7 @@ app.post("/login", (request, response, next) => {
       if (error) {
         response.redirect("/login");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.findOne(
             {
@@ -186,7 +186,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("questionReply", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -226,7 +226,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("tenpoints", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -245,7 +245,7 @@ function newConnection(socket) {
                 } else {
                   // console.log("added 10 points");
                   // console.log("this is your player", user);
-                  const db = client.db("websockets-pictionary");
+                  const db = client.db("websockets");
                   db.collection("users", (error, collection) => {
                     collection.updateOne(
                       {
