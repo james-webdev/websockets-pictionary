@@ -33,14 +33,14 @@ html(lang="en")
     .players 
       h1 Hey #{name}! 
       h2 
-      h5 Who is playing?
+      h5 Who is playing? Click to add 10 points if they guess right first!
       ul
         li
         
     script.
       //- const urlApp = "http://localhost:8080";
       //GUESS CHAT
-      socket = io.connect("https://pictionary-multiplayer-sockets.herokuapp.com/");
+      socket = io.connect("https://pictionary-websockets.herokuapp.com/");
         const send = function (){
         const text = document.querySelector(".message").value;
       // console.log(text);
@@ -63,7 +63,7 @@ html(lang="en")
       console.log("you clicked me!!");
       // console.log($);
       $.ajax({
-      url: "https://pictionary-multiplayer-sockets.herokuapp.com/words",
+      url: "https://pictionary-websockets.herokuapp.com/words",
       method: "GET",
       success: function (results) {
       // console.log(results);
