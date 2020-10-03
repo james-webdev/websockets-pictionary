@@ -5,7 +5,7 @@ let buttonClear;
 function setup() {
   createCanvas(600, 600);
   background("black");
-  socket = io.connect("https://pictionary-websockets.herokuapp.com/");
+  socket = io.connect("https://pictionary-james.herokuapp.com/");
 
   socket.on("mouse", (data) => {
     line(data.x, data.y, data.a, data.b);
