@@ -32,10 +32,10 @@ html(lang="en")
       p.para(style="color: white;")
     .players 
       h1 Hey #{name}! 
-      h2 
-      h5 Who is playing? Click to add 10 points if they guess right first!
-      ul
-        li
+      //- h2 
+      //- h5 Who is playing? Click to add 10 points if they guess right first!
+      //- ul
+        //- li
         
     script.
       //- const urlApp = "http://localhost:8080";
@@ -95,46 +95,46 @@ html(lang="en")
           var idUtilisateur = '#{_id}';
           socket.emit('whoAreYou', idUtilisateur);
           
-          const userName = '#{name}'
-          socket.emit("I am here", userName);
+          //- const userName = '#{name}'
+          //- socket.emit("I am here", userName);
          
-          let responseArray = [];
-          socket.on('questionReply',function(response) {
+          //- let responseArray = [];
+          //- socket.on('questionReply',function(response) {
              
-              responseArray.push(response);
+          //-     responseArray.push(response);
               
-              setInterval(function(){
-              socket.on("pointsUpdate", function(user){
-                console.log("pointsUpdate", user._id, idUtilisateur);
-                if(user._id === idUtilisateur){
-                const H2 = document.querySelector("h2");
-                console.log(H2);
-                H2.innerHTML = user.points;
-                };
-              });
-              }, 3000);
+              //- setInterval(function(){
+              //- socket.on("pointsUpdate", function(user){
+              //-   console.log("pointsUpdate", user._id, idUtilisateur);
+              //-   if(user._id === idUtilisateur){
+              //-   const H2 = document.querySelector("h2");
+              //-   console.log(H2);
+              //-   H2.innerHTML = user.points;
+              //-   };
+              //- });
+              //- }, 3000);
                
-               let responseID = response._id;
-               //- console.log("the response ID", responseID);
-               console.log("Heres whats in your array", responseArray); 
-               const ul = document.querySelector("ul");
-               ul.innerHTML = "";
-               //-  console.log("You Are :", response);  
-               responseArray.forEach((user) => {      
-               ul.innerHTML += `<li><button class="clickIt btn btn-outline-primary">${user.name}</button></li>`;
-               })       
+              //-  let responseID = response._id;
+              //-  //- console.log("the response ID", responseID);
+              //-  console.log("Heres whats in your array", responseArray); 
+              //-  const ul = document.querySelector("ul");
+              //-  ul.innerHTML = "";
+              //-  //-  console.log("You Are :", response);  
+              //-  responseArray.forEach((user) => {      
+              //-  ul.innerHTML += `<li><button class="clickIt btn btn-outline-primary">${user.name}</button></li>`;
+              //-  })       
                
               
-               const clickButt = document.querySelector(".clickIt")
-              //-  console.log(clickButt);
-               socket.on("points", function(results){
-                //-  console.log(results);
-               });
-               clickButt.addEventListener("click", (e) => {
-                  //- console.log("event", e);
-                  console.log("you clicked me to add points!");
-                  socket.emit('tenpoints', responseID);
-                });
-           });
+              //-  const clickButt = document.querySelector(".clickIt")
+              //- //-  console.log(clickButt);
+              //-  socket.on("points", function(results){
+              //-   //-  console.log(results);
+              //-  });
+              //-  clickButt.addEventListener("click", (e) => {
+              //-     //- console.log("event", e);
+              //-     console.log("you clicked me to add points!");
+              //-     socket.emit('tenpoints', responseID);
+              //-   });
+          //-  });
        });
        //CLEAR
