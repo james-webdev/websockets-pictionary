@@ -16,7 +16,7 @@ html(lang="en")
       //- h1 Pictionary!!
       // <textarea name="guess" id="" cols="30" rows="10">Guess</textarea>
       div
-        a.logout(href='/login') Log out (log out and in again to see your points)
+        a.logout(href='/login')(log out and in again refresh your points)
         .textareas
           .txta1
             label(for="") Chat! Say your name and send your guesses:
@@ -31,7 +31,7 @@ html(lang="en")
       button.newword.btn.btn-outline-primary New Word
       p.para(style="color: white;")
     .players 
-      h1 Hey #{name}! You have #{points}!
+      h1 Hey #{name}! You have #{points} points!
       h2 
       h5 Who is playing? Click to add 10 points if they guess right first!
       ul
