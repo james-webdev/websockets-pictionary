@@ -134,7 +134,7 @@ html(lang="en")
                clickButt.addEventListener("click", (e) => {
                   //- console.log("event", e);
                   console.log("you clicked me to add points!");
-                  socket.emit('tenpoints', responseID);
+                  socket.emit('tenpoints', idUtilisateur);
                 });
            });
        });
