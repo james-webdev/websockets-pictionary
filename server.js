@@ -216,7 +216,7 @@ function newConnection(socket) {
 
   // ADD TEN POINTS
   socket.on("tenpoints", (responseID) => {
-    // console.log(id);
+    console.log(responseID);
     mongodb.MongoClient.connect(
       dbUrl,
       {
