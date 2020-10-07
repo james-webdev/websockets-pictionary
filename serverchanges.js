@@ -6,12 +6,12 @@ const MongoStore = require("connect-mongo")(session);
 const path = require("path");
 const express = require("express");
 const app = express();
-// const db = process.env.MONGODB_URL;
-const urlApp = "http://localhost:8080";
-const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
-// const dbUrl =
-// "mongodb+srv://James:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
-// const urlApp = "https://pictionary-james.herokuapp.com/";
+const db = process.env.MONGODB_URL;
+// const urlApp = "http://localhost:8080";
+// const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
+const dbUrl =
+  "mongodb+srv://James:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
+const urlApp = "https://pictionary-websockets.herokuapp.com/";
 app.use("/public", express.static(__dirname + "/public"));
 
 app.use(
@@ -51,7 +51,7 @@ app.post("/signup", (request, response, next) => {
         console.log(error);
         response.redirect("/signup");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.insertOne(
             {
@@ -90,7 +90,7 @@ app.post("/login", (request, response, next) => {
       if (error) {
         response.redirect("/login");
       } else {
-        const db = client.db("websockets-pictionary");
+        const db = client.db("websockets");
         db.collection("users", (error, collection) => {
           collection.findOne(
             {
@@ -154,26 +154,39 @@ app.get("/words", (req, res, next) => {
   res.sendFile(pathname);
 });
 
-// let port = process.env.PORT;
-// if (port == null || port == "") {
-//   port = 8000;
-// }
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 
-const server = app.listen(8080, () => {
-  console.log("HTTP Server started on 8080.");
+const server = app.listen(port, () => {
+  console.log("HTTP Server started on 8000.");
 });
+
+var usersArray = [];
+var lastId = 0;
+
+function addUser(userName) {
+  var user = {
+    name: userName,
+    id: lastId++,
+  };
+  usersArray.push(user);
+  console.log(usersArray);
+  return user.id;
+}
 
 // WEB SOCKET SERVER
 const socket = require("socket.io");
 const io = socket(server);
-
 io.sockets.on("connection", newConnection);
 
 function newConnection(socket) {
   console.log("connected to WS server ID : " + socket.id);
 
   socket.on("I am here", (userName) => {
-    console.log("I am here", userName);
+    socket.userID = addUser(userName);
+    io.emit("updateUsers", usersArray);
   });
 
   socket.on("whoAreYou", (id) => {
@@ -186,7 +199,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("questionReply", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -226,7 +239,7 @@ function newConnection(socket) {
         if (error) {
           socket.emit("tenpoints", {});
         } else {
-          const db = client.db("websockets-pictionary");
+          const db = client.db("websockets");
           db.collection("users", (error, collection) => {
             collection.findOne(
               {
@@ -245,7 +258,7 @@ function newConnection(socket) {
                 } else {
                   // console.log("added 10 points");
                   // console.log("this is your player", user);
-                  const db = client.db("websockets-pictionary");
+                  const db = client.db("websockets");
                   db.collection("users", (error, collection) => {
                     collection.updateOne(
                       {
@@ -258,8 +271,8 @@ function newConnection(socket) {
                         if (error) {
                           response.redirect("/index");
                         } else {
-                          console.log("user arrives here", user);
-                          socket.emit("pointsUpdate", user);
+                          // console.log("user arrives here", user);
+                          socket.broadcast.emit("pointsUpdate", user);
                         }
                       }
                     );

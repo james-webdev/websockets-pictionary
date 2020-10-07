@@ -16,7 +16,7 @@ html(lang="en")
       //- h1 Pictionary!!
       // <textarea name="guess" id="" cols="30" rows="10">Guess</textarea>
       div
-        a.logout(href='/login') Log out 
+        a.logout(href='/login') (log out and in again to refresh your total points)
         .textareas
           .txta1
             label(for="") Chat! Say your name and send your guesses:
@@ -31,16 +31,16 @@ html(lang="en")
       button.newword.btn.btn-outline-primary New Word
       p.para(style="color: white;")
     .players 
-      h1 Hey #{name}!
+      h1 Hey #{name}! You have #{points} points!
       h2 
-      h5 Who is playing? Click your name to add 10 points if you guess right first!
+      h5 Who is playing with you? Click your name to add ten points if you guess right first!
       ul
         li
         
     script.
       //- const urlApp = "http://localhost:8080";
       //GUESS CHAT
-      socket = io.connect("http://localhost:8080");
+      socket = io.connect("https://pictionary-websockets.herokuapp.com/");
         const send = function (){
         const text = document.querySelector(".message").value;
       // console.log(text);
@@ -63,7 +63,7 @@ html(lang="en")
       console.log("you clicked me!!");
       // console.log($);
       $.ajax({
-      url: "http://localhost:8080/words",
+      url: "https://pictionary-websockets.herokuapp.com/words",
       method: "GET",
       success: function (results) {
       // console.log(results);
@@ -87,6 +87,22 @@ html(lang="en")
       },
       });
       });
+
+       //Update userlist 
+       var updateUsers = function(users) { 
+        users.forEach(function(user) {
+            if (user.name != userName) {
+                addUser(user);
+            });
+       });
+       };
+       var addUser = function(user) {
+        const ul = document.querySelector("ul");
+               ul.innerHTML = "";
+               //-  console.log("You Are :", response);  
+               responseArray.forEach((user) => {      
+               ul.innerHTML += `<li><button class="clickIt btn btn-outline-primary">${user.name}</button></li>`;
+       };
       //SHOW ID
       
      
@@ -97,13 +113,16 @@ html(lang="en")
           
           const userName = '#{name}'
           socket.emit("I am here", userName);
-         
+          socket.on("updateUsers", updateUsers);
+
+
+
           let responseArray = [];
           socket.on('questionReply',function(response) {
              
               responseArray.push(response);
               
-             
+              setInterval(function(){
               socket.on("pointsUpdate", function(user){
                 console.log("pointsUpdate", user._id, idUtilisateur);
                 if(user._id === idUtilisateur){
@@ -112,7 +131,7 @@ html(lang="en")
                 H2.innerHTML = user.points;
                 };
               });
-              
+              }, 3000);
                
                let responseID = response._id;
                //- console.log("the response ID", responseID);
