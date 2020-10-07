@@ -259,7 +259,7 @@ function newConnection(socket) {
                           response.redirect("/index");
                         } else {
                           // console.log("user arrives here", user);
-                          socket.broadcast.emit("pointsUpdate", user);
+                          socket.emit("pointsUpdate", user);
                         }
                       }
                     );
