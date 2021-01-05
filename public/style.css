@@ -133,3 +133,26 @@ ul {
 .logout:hover {
   color: white;
 }
+
+/* mobile */
+
+@media only screen and (max-width: 600px) {
+  /* main {
+    display: none;
+  } */
+  body {
+    display: block;
+  }
+
+  canvas {
+    margin-left: 500px;
+  }
+
+  .container {
+    margin-left: 350px;
+  }
+
+  .players {
+    margin-left: 50px;
+  }
+}
