@@ -141,18 +141,30 @@ ul {
     display: none;
   } */
   body {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   canvas {
-    margin-left: 500px;
+    margin: auto;
+    height: 200px !important;
+    width: 200px !important;
   }
 
   .container {
-    margin-left: 350px;
+    margin: auto;
   }
 
   .players {
-    margin-left: 50px;
+    margin: auto;
+    margin-top: 180px;
+  }
+
+  button {
+    position: static !important;
+    left: 0px;
+    width: 150px;
+    margin: auto;
+    margin-top: 20px;
   }
 }
