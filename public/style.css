@@ -147,8 +147,9 @@ ul {
 
   canvas {
     margin: auto;
-    height: 200px !important;
-    width: 200px !important;
+    margin-left: 90px !important;
+    height: 250px !important;
+    width: 250px !important;
   }
 
   .container {
