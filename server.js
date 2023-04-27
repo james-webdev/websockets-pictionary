@@ -7,8 +7,8 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const db = process.env.MONGODB_URL;
-// const urlApp = "http://localhost:8080";
-// const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
+//const urlApp = "http://localhost:8080";
+//const dbUrl = "mongodb://localhost:27017/websockets-pictionary";
 const dbUrl =
   "mongodb+srv://James:websockets@cluster0.hmv3v.mongodb.net/websockets?retryWrites=true&w=majority";
 const urlApp = "https://pictionary-websockets.herokuapp.com/";
